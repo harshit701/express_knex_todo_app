@@ -1,4 +1,5 @@
 import { getAllTodos, createTodo, deleteTodo, getTodoById, updateTodo } from '../models/todo.js';
+import { getValueByKey, setKey } from '../utils/redis.js';
 
 export const findAll = async (req, res) => {
     const query = req.query;
@@ -15,8 +16,17 @@ export const findById = async (req, res) => {
     const todoId = req.params.id;
 
     try {
-        const todo = await getTodoById(todoId);
-        res.status(200).json(todo);
+        const cachedTodo = await getValueByKey(`${todoId}`);
+
+        if (cachedTodo) {
+            console.log('cached todo');
+            res.status(200).json(cachedTodo);
+        } else {
+            console.log('making call with db...');
+            const todo = await getTodoById(todoId);
+            setKey(`${todoId}`, todo);
+            res.status(200).json(todo);
+        }
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
