@@ -18,6 +18,8 @@ export default {
       tableName: 'knex_migrations',
       directory: './migrations',
     },
+    debug: true,
+    compileSqlOnError: true
   },
 
   // staging: {

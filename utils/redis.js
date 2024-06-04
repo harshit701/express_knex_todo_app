@@ -1,14 +1,14 @@
 import { createClient } from 'redis';
 
-const client = createClient({
-    socket: {
-        host: '127.0.0.1',
-        port: 6379
-    }
-});
-client.on('error', err => console.log('Redis Client Error', err));
+// const client = createClient({
+//     socket: {
+//         host: '127.0.0.1',
+//         port: 6379
+//     }
+// });
+// client.on('error', err => console.log('Redis Client Error', err));
 
-await client.connect();
+// await client.connect();
 
 
 export const setKey = async (key, value) => {
@@ -22,4 +22,4 @@ export const getValueByKey = async (key) => {
     return JSON.parse(cachedData);
 }
 
-export default client;
+// export default client;
